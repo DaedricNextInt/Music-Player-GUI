@@ -42,7 +42,7 @@ public class musicPlayerGUI {
 	private File songFile;
 	private JButton btnStopButton;
 	private JTextField txtHello;
-	
+	Player player = null;
 	/**
 	 * Launch the application.
 	 */
@@ -100,6 +100,8 @@ public class musicPlayerGUI {
 		panel_1.setBounds(10, 11, 275, 459);
 		frameD.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
+		
+		
 		/*Open File*/
 		JButton btnOpen = new JButton("open");
 		btnOpen.setBackground(Color.DARK_GRAY);
@@ -117,20 +119,18 @@ public class musicPlayerGUI {
 		btnStopButton_1.setBounds(77, 371, 128, 36);
 		panel_1.add(btnStopButton_1);
 		btnStopButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				close();
-				//STOPPPPPPPPPPPPPPPPP
-		try {
-			Player p = new Player( new FileInputStream(songFile));
-			p.close();
-		} catch (Exception n) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "No File Slected!", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		
-				
-		
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        try {
+		            if (player != null) {
+		                player.close(); // Close the 'player'
+		                player = null; // Reset the 'player' instance
+		            } else {
+		                JOptionPane.showMessageDialog(null, "No music is playing!", "Error", JOptionPane.ERROR_MESSAGE);
+		            }
+		        } catch (Exception ex) {
+		            ex.printStackTrace();
+		        }
+		    }
 		});
 		
 		songPathField = new JTextField();
@@ -150,20 +150,19 @@ public class musicPlayerGUI {
 		panel_2.setBounds(10, 58, 255, 150);
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
-		/*Action to play audio*/
+		
+		/*Action to START playing audio*/
 		btnStart.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent arg0) {
 		        SwingWorker<Void, Void> musicPlayerWorker = new SwingWorker<Void, Void>() {
 		            @Override
 		            protected Void doInBackground() throws Exception {
 		                try {
-		                    Player p = new Player(new FileInputStream(songFile));
-		                    p.play();
-		                    p.close();
+		                    // Initialize the 'player' when starting playback
+		                    player = new Player(new FileInputStream(songFile));
+		                    player.play();
 		                } catch (Exception e) {
-		                    // Handle exceptions if any
-		                    SwingUtilities.invokeLater(() ->
-		                            JOptionPane.showMessageDialog(null, "Error playing the file!", "Error", JOptionPane.ERROR_MESSAGE));
+		                    JOptionPane.showMessageDialog(null, "Error playing the file!", "Error", JOptionPane.ERROR_MESSAGE);
 		                }
 		                return null;
 		            }
@@ -206,13 +205,4 @@ public class musicPlayerGUI {
 	    };
 	    fileChooserWorker.execute();
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
 }
