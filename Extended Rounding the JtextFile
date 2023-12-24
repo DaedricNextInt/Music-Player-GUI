@@ -1,0 +1,36 @@
+package experimentalProjects;
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicTextFieldUI;
+
+import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
+
+public class TextField {
+
+    public static void roundTextField(JTextField textField) {
+        textField.setOpaque(false);
+        textField.setForeground(Color.BLACK);
+        textField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+        textField.setUI(new JTextFieldUI());
+    }
+
+    static class JTextFieldUI extends BasicTextFieldUI {
+        @Override
+        protected void paintSafely(Graphics g) {
+            if (g instanceof Graphics2D) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                JTextField textField = (JTextField) getComponent();
+                int arc = 20; // Adjust the arc as needed
+                Shape borderShape = new RoundRectangle2D.Double(0, 0, textField.getWidth() - 1, textField.getHeight() - 1, arc, arc);
+                g2d.setColor(textField.getBackground());
+                g2d.fill(borderShape);
+                g2d.setColor(textField.getForeground());
+                g2d.draw(borderShape);
+                g2d.dispose();
+            }
+            super.paintSafely(g);
+        }
+    }
+}
