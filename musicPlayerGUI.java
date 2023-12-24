@@ -32,8 +32,16 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.RoundRectangle2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 
 import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Panel;
 
 public class musicPlayerGUI {
 
@@ -41,12 +49,14 @@ public class musicPlayerGUI {
 	private JTextField songPathField;
 	private File songFile;
 	private JButton btnStopButton;
-	private JTextField txtHello;
 	Player player = null;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+		
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -59,65 +69,61 @@ public class musicPlayerGUI {
 				}
 			}
 		});
+		
+		
+	
+		
+		
 	}
 
-	/**
-	 * Create the application.
-	 */
+	
+	
+	
 	public musicPlayerGUI() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	/* Initialize the contents of the frame.*/
+	
 	private void initialize() {
 		frameD = new JFrame();
 		frameD.getContentPane().setBackground(Color.DARK_GRAY);
 		frameD.getContentPane().setForeground(Color.GRAY);
 		frameD.setTitle("Daedric's Music");
-		frameD.setBounds(100, 100, 645, 533);
+		frameD.setBounds(100, 100, 527, 533);
 		frameD.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameD.setLocationRelativeTo(null);
 		frameD.getContentPane().setLayout(null);
+		/*Rounding the outer frame of the application*/
+		frameD.setUndecorated(true);
+		frameD.setShape(new RoundRectangle2D.Double(0, 0, frameD.getWidth(), frameD.getHeight(), 30, 30));
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(128, 128, 0));
-		panel.setBounds(295, 11, 324, 459);
-		frameD.getContentPane().add(panel);
-		panel.setLayout(null);
-		
-		txtHello = new JTextField();
-		txtHello.setFont(new Font("Yu Gothic", Font.PLAIN, 11));
-		txtHello.setHorizontalAlignment(SwingConstants.CENTER);
-		txtHello.setText("\r\n");
-		txtHello.setBounds(28, 11, 267, 213);
-		panel.add(txtHello);
-		txtHello.setColumns(10);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(128, 128, 0));
-		panel_1.setBounds(10, 11, 275, 459);
-		frameD.getContentPane().add(panel_1);
-		panel_1.setLayout(null);
+		/*Text field*/
+		songPathField = new JTextField();
+		songPathField.setBackground(new Color(218, 165, 32));
+		songPathField.setBounds(143, 68, 232, 79);
+		frameD.getContentPane().add(songPathField);
+		songPathField.setEditable(false);
+		songPathField.setText("Song Title");
+		songPathField.setColumns(10);
+		TextField.roundTextField(songPathField);
 		
 		
-		/*Open File*/
+		
+		
 		JButton btnOpen = new JButton("open");
+		btnOpen.setBounds(222, 220, 66, 43);
+		frameD.getContentPane().add(btnOpen);
 		btnOpen.setBackground(Color.DARK_GRAY);
-		btnOpen.setBounds(77, 219, 128, 67);
-		panel_1.add(btnOpen);
-		btnOpen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) { //open file
-				open();
-				
-			}
-		});
-		/*Close File*/
+		
+		JButton btnStart = new JButton("Start");
+		btnStart.setBounds(48, 346, 128, 36);
+		frameD.getContentPane().add(btnStart);
+		btnStart.setBackground(Color.DARK_GRAY);
 		JButton btnStopButton_1 = new JButton("Stop");
+		btnStopButton_1.setBounds(336, 346, 128, 36);
+		frameD.getContentPane().add(btnStopButton_1);
 		btnStopButton_1.setBackground(Color.DARK_GRAY);
-		btnStopButton_1.setBounds(77, 371, 128, 36);
-		panel_1.add(btnStopButton_1);
 		btnStopButton_1.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        try {
@@ -133,25 +139,7 @@ public class musicPlayerGUI {
 		    }
 		});
 		
-		songPathField = new JTextField();
-		songPathField.setBounds(21, 11, 228, 36);
-		panel_1.add(songPathField);
-		songPathField.setEditable(false);
-		songPathField.setText("Song Title");
-		songPathField.setColumns(10);
-		
-		JButton btnStart = new JButton("Start");
-		btnStart.setBackground(Color.DARK_GRAY);
-		btnStart.setBounds(77, 313, 128, 36);
-		panel_1.add(btnStart);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.DARK_GRAY);
-		panel_2.setBounds(10, 58, 255, 150);
-		panel_1.add(panel_2);
-		panel_2.setLayout(null);
-		
-		/*Action to START playing audio*/
+	
 		btnStart.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent arg0) {
 		        SwingWorker<Void, Void> musicPlayerWorker = new SwingWorker<Void, Void>() {
@@ -170,6 +158,14 @@ public class musicPlayerGUI {
 		        musicPlayerWorker.execute();
 		    }
 		});
+		btnOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { //open file
+				open();
+				
+			}
+		});
+		
+		/*Action to START playing audio*/
 
 	}
 	/*OPEN FILE & SELECTION*/
@@ -186,7 +182,7 @@ public class musicPlayerGUI {
 	            }
 	            return null;
 	        }
-
+/*Where the textField grabs the File*/
 	        @Override
 	        protected void done() {
 	            try {
