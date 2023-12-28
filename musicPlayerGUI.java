@@ -1,62 +1,30 @@
 package experimentalProjects;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-
-import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
-
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import java.awt.event.ActionListener;
+import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import javax.swing.JProgressBar;
-import javax.swing.JSlider;
-import java.awt.SystemColor;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JMenuItem;
-import javax.swing.JTable;
-import javax.swing.JList;
-import javax.swing.JToggleButton;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-
-import java.awt.Font;
-import java.awt.GradientPaint;
-import java.awt.Panel;
 
 public class musicPlayerGUI {
-
 	private JFrame frameD;
 	private JTextField songPathField;
 	private File songFile;
-	private JButton btnStopButton;
 	Player player = null;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
-		
-		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -69,16 +37,8 @@ public class musicPlayerGUI {
 				}
 			}
 		});
-		
-		
-	
-		
-		
 	}
 
-	
-	
-	
 	public musicPlayerGUI() {
 		initialize();
 	}
@@ -97,7 +57,6 @@ public class musicPlayerGUI {
 		/*Rounding the outer frame of the application*/
 		frameD.setUndecorated(true);
 		frameD.setShape(new RoundRectangle2D.Double(0, 0, frameD.getWidth(), frameD.getHeight(), 30, 30));
-		
 		/*Text field*/
 		songPathField = new JTextField();
 		songPathField.setBackground(new Color(218, 165, 32));
@@ -107,15 +66,10 @@ public class musicPlayerGUI {
 		songPathField.setText("Song Title");
 		songPathField.setColumns(10);
 		TextField.roundTextField(songPathField);
-		
-		
-		
-		
 		JButton btnOpen = new JButton("open");
 		btnOpen.setBounds(222, 220, 66, 43);
 		frameD.getContentPane().add(btnOpen);
 		btnOpen.setBackground(Color.DARK_GRAY);
-		
 		JButton btnStart = new JButton("Start");
 		btnStart.setBounds(48, 346, 128, 36);
 		frameD.getContentPane().add(btnStart);
@@ -138,8 +92,6 @@ public class musicPlayerGUI {
 		        }
 		    }
 		});
-		
-	
 		btnStart.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent arg0) {
 		        SwingWorker<Void, Void> musicPlayerWorker = new SwingWorker<Void, Void>() {
@@ -166,7 +118,6 @@ public class musicPlayerGUI {
 		});
 		
 		/*Action to START playing audio*/
-
 	}
 	/*OPEN FILE & SELECTION*/
 	private void open() {
